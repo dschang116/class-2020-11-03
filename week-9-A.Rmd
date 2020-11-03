@@ -48,8 +48,23 @@ week_9 <- kenya %>%
   
 * Fit a `stan_glm()` model which relates poverty to distance. Print a summary. (Hint: In order to see the coefficient of `distance`, you will probably need to use the `digits` argument to `print()`.) Interpret the meaning of the two important parameters.  
 
+```{r}
+week_9 %>% 
+  ggplot(aes(x = distance, y = poverty)) +
+    geom_point() +
+    geom_smooth(formula = y~ x, method = "lm", se = FALSE)
+```
+$$poverty_i = \beta_0 + \beta_1 distance_i + \epsilon_i$$
 
+```{r}
+fit_obj_1 <- stan_glm(formula = poverty ~ distance,
+                    data = week_9,
+                    refresh = 0)
+```
 
+```{r}
+print(fit_obj, digits = 4)
+```
 
 
 ## Scene 2
@@ -60,7 +75,17 @@ week_9 <- kenya %>%
 
 * Estimate the model. Assign the fitted model to `fit_2`. Interpret the important parameters of the model.
 
+$$reg\_chg_i = \beta_0 + beta_1 treatment_i + \beta_2 poverty_i \\ + beta_3 distance_i + \beta_4 pop\_density_i + \epsilon_i$$
 
+```{r}
+fit_obj_2 <- stan_glm(formula = reg_chg ~ treatment + poverty + distance + pop_density,
+         data = week_9,
+         refresh = 0)
+```
+
+```{r}
+print(fit_obj_2, digits = 5)
+```
 
 ## Scene 3
 
